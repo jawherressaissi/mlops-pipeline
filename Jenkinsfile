@@ -7,9 +7,9 @@ pipeline {
         stage ('GIT') {
             steps {
                echo "Getting Project from Git"; 
-		sh "git checkout -b jawher"
-                git branch: "jawher", 
-                    url: "https://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@github.com/jawherressaissi/tpachat.git";
+		sh "git checkout -b master"
+                git branch: "master", 
+                    url: "https://github.com/jawherressaissi/mlops-pipeline.git";
 		}
         }
        
