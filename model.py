@@ -22,15 +22,18 @@ max_length = 128
 lr = 1e-3
 num_epochs = 3
 batch_size = 8
-
+print("VARS OK")
 # creating model
 peft_config = LoraConfig(task_type=TaskType.SEQ_2_SEQ_LM, inference_mode=False, r=8, lora_alpha=32, lora_dropout=0.1)
-
+print("PEFT CONFIG OK")
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name_or_path)
+print("MODEL OK")
 model = get_peft_model(model, peft_config)
+print("PEFT MODEL OK")
 model.print_trainable_parameters()
 
 dataset = load_dataset("financial_phrasebank", "sentences_allagree")
+print("DATASET OK")
 dataset = dataset["train"].train_test_split(test_size=0.1)
 dataset["validation"] = dataset["test"]
 del dataset["test"]
@@ -43,7 +46,7 @@ dataset = dataset.map(
 )
 
 tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
-
+print("TOKENIZER OK")
 
 def preprocess_function(examples):
     inputs = examples[text_column]
@@ -81,7 +84,7 @@ lr_scheduler = get_linear_schedule_with_warmup(
 )
 
 model = model.to(device)
-
+print("TRAINING STARTED")
 for epoch in range(num_epochs):
     model.train()
     total_loss = 0
@@ -114,6 +117,7 @@ for epoch in range(num_epochs):
     train_ppl = torch.exp(train_epoch_loss)
     print(f"{epoch=}: {train_ppl=} {train_epoch_loss=} {eval_ppl=} {eval_epoch_loss=}")
 
+print("TEST STARTED")
 correct = 0
 total = 0
 for pred, true in zip(eval_preds, dataset["validation"]["text_label"]):
