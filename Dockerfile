@@ -6,6 +6,10 @@ WORKDIR /app
 USER root
 
 RUN apt-get update && apt-get install -y jq
-RUN pip install accelerate transformers peft torch datasets tqdm torchvision torchaudio
+RUN pip install accelerate transformers peft torch datasets tqdm torchvision torchaudio Flask mlflow
 
 COPY model.py .
+COPY app.py .
+
+EXPOSE 5000
+EXPOSE 5001
