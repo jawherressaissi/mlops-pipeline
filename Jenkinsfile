@@ -25,15 +25,7 @@ pipeline {
         stage("Train") {
             steps {
                 //sh "docker container exec sa-model python3 model.py"
-                script {
-                    def experimentName = "MLOps SA Pipeline"  // Name of the MLflow experiment
-                    
-                    sh "mlflow experiments create -n ${experimentName} -u http://localhost:5000"
-
-                    // Log the trained model and other artifacts to MLflow
-                    sh "mlflow run . --experiment-name ${experimentName} -u http://localhost:5000"
-                    sh "mlflow log_artifacts . --experiment-name ${experimentName} -u http://localhost:5000"
-                }
+                sh "pwd"
             }
         }
 
@@ -51,15 +43,6 @@ pipeline {
                     fi
                 '''
                 
-            }
-        }
-
-        stage('MLflow Tracking') {
-            steps {
-                // Set up MLflow tracking
-                script {
-                    sh "pwd"
-                }
             }
         }
 
