@@ -24,6 +24,7 @@ pipeline {
         stage("Train") {
             steps {
                 //sh "docker container exec sa-model python3 model.py"
+                sh "pawd"
             }
         }
 
