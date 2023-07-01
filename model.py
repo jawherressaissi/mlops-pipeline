@@ -3,6 +3,7 @@ from peft import get_peft_config, get_peft_model, get_peft_model_state_dict, Lor
 import torch
 from datasets import load_dataset
 import os
+import json
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from transformers import AutoTokenizer
@@ -148,3 +149,13 @@ with torch.no_grad():
     outputs = model.generate(input_ids=inputs["input_ids"], max_new_tokens=10)
     print(outputs)
     print(tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True))
+
+
+test_results_file = 'test_metadata.json'
+
+test_metadata = {
+    "accuracy": accuracy
+}
+# Serialize and save metadata
+with open(test_results_file, 'w') as outfile:
+    json.dump(test_metadata, outfile)

@@ -13,9 +13,24 @@ pipeline {
 		}
         }
        
-        stage("Build") {
+        stage("Train") {
             steps {
-                sh "pwd"
+                sh "python3.9 model.py"
+            }
+        }
+
+        stage("Test") {
+            steps {
+                sh '''
+                    val_acc=$(sudo -S jq .accuracy /home/vagrant/mlops-pipeline/train_metadata.json)
+                    threshold=0.8
+
+                    if echo "$threshold > $val_acc" | bc -l | grep -q 1; then
+                        echo 'Validation accuracy is lower than the threshold, process stopped'
+                    else
+                        echo 'Validation accuracy is higher than the threshold'
+                    fi
+                '''
             }
         }
         
