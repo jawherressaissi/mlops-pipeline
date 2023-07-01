@@ -15,7 +15,7 @@ pipeline {
        
         stage("Train") {
             steps {
-                sh "python3.9 model.py"
+                sh "python3 model.py"
             }
         }
 
