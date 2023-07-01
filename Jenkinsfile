@@ -15,6 +15,7 @@ pipeline {
        
         stage("Build Docker image") {
             steps {
+                sh "chmod 666 /var/run/docker.sock"
                 //sh "docker build -t sa-model ."
                 sh "docker run -t -d --name sa-model sa-model"
                 //sh "docker start sa-model"
@@ -40,6 +41,7 @@ pipeline {
                         echo 'Validation accuracy is higher than the threshold'
                     fi
                 '''
+                sh "docker stop sa-model && docker rm sa-model"
             }
         }
         
