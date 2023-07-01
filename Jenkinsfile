@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sh "docker exec -d sa-model cat test_metadata.json "
                 sh '''
-                    val_acc=$(docker container exec sa-model jq .accuracy train_metadata.json)
+                    val_acc=$(docker container exec sa-model jq .accuracy test_metadata.json)
                     threshold=0.8
 
                     if echo "$threshold > $val_acc" | bc -l | grep -q 1; then
