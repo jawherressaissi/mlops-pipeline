@@ -24,15 +24,16 @@ pipeline {
 
         stage("Train") {
             steps {
-                sh "docker container exec sa-model python3 model.py"
+                //sh "docker container exec sa-model python3 model.py"
+                sh "ls"
             }
         }
 
         stage("Test") {
             steps {
-                sh "docker exec -d sa-model cat /home/jenkins/results/test_metadata.json "
+                sh "docker exec -d sa-model cat test_metadata.json "
                 sh '''
-                    val_acc=$(docker container exec sa-model jq .accuracy /home/jenkins/results/train_metadata.json)
+                    val_acc=$(docker container exec sa-model jq .accuracy train_metadata.json)
                     threshold=0.8
 
                     if echo "$threshold > $val_acc" | bc -l | grep -q 1; then
