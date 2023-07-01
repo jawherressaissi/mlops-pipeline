@@ -25,7 +25,23 @@ pipeline {
         stage("Train") {
             steps {
                 //sh "docker container exec sa-model python3 model.py"
-                sh "pwd"
+                script {
+                    // Define MLflow parameters
+                    def mlflowContainerName = "mlflow-sa-container"  // Name of your MLflow Docker container
+                    def experimentName = "MLOps SA Pipeline"  // Name of the MLflow experiment
+
+                    // Start an MLflow run in the Docker container
+                    sh "docker run -d --name ${mlflowContainerName} -p 5000:5000 ghcr.io/mlflow/mlflow server"
+                    sh "mlflow experiments create -n ${experimentName} -u http://localhost:5000"
+
+                    // Log the trained model and other artifacts to MLflow
+                    sh "mlflow run . --experiment-name ${experimentName} -u http://localhost:5000"
+                    sh "mlflow log_artifacts . --experiment-name ${experimentName} -u http://localhost:5000"
+
+                    // Stop and remove the MLflow Docker container
+                    sh "docker stop ${mlflowContainerName}"
+                    sh "docker rm ${mlflowContainerName}"
+                }
             }
         }
 
