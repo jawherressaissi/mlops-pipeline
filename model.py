@@ -12,15 +12,15 @@ from tqdm import tqdm
 from datasets import load_dataset
 
 device = "cpu"
-model_name_or_path = "bigscience/mt0-large"
-tokenizer_name_or_path = "bigscience/mt0-large"
+model_name_or_path = "bigscience/mt0-small"
+tokenizer_name_or_path = "bigscience/mt0-small"
 
 checkpoint_name = "financial_sentiment_analysis_lora_v1.pt"
 text_column = "sentence"
 label_column = "text_label"
 max_length = 128
 lr = 1e-3
-num_epochs = 3
+num_epochs = 1
 batch_size = 8
 print("VARS OK")
 # creating model
