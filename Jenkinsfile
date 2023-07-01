@@ -15,9 +15,9 @@ pipeline {
        
         stage("Build Docker image") {
             steps {
-                sh "docker build -t sa-model ."
-                sh "docker stop sa-model"
-                sh "docker run -d --name sa-model sa-model"
+                //sh "docker build -t sa-model ."
+                //sh "docker stop sa-model"
+                sh "docker start sa-model"
             }
         }
 
