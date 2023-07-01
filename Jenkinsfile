@@ -13,15 +13,23 @@ pipeline {
 		}
         }
        
+        stage("Build Docker image") {
+            steps {
+                sh "sudo -S docker build -t sa-model ."
+                sh "sudo -S docker run -d --name sa-model sa-model"
+            }
+        }
+
         stage("Train") {
             steps {
-                sh "python --version"
+                sh "sudo -S docker container exec sa-model python3 model.py"
             }
         }
 
         stage("Test") {
             steps {
                 sh '''
+                    sudo -S docker container exec sa-model cat /home/vagrant/test_metadata.json 
                     val_acc=$(sudo -S jq .accuracy /home/vagrant/mlops-pipeline/train_metadata.json)
                     threshold=0.8
 
