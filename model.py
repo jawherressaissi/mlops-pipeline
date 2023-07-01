@@ -156,6 +156,9 @@ test_results_file = 'test_metadata.json'
 test_metadata = {
     "accuracy": accuracy
 }
+
+RESULTS_DIR = os.environ["RESULTS_DIR"]
+results_path = os.path.join(RESULTS_DIR, test_results_file)
 # Serialize and save metadata
-with open(test_results_file, 'w') as outfile:
+with open(results_path, 'w') as outfile:
     json.dump(test_metadata, outfile)
