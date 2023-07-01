@@ -15,7 +15,6 @@ pipeline {
        
         stage("Build Docker image") {
             steps {
-                sh "chmod 666 /var/run/docker.sock"
                 //sh "docker build -t sa-model ."
                 sh "docker run -t -d --name sa-model sa-model"
                 //sh "docker start sa-model"
